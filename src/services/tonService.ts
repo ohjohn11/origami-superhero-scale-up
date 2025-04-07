@@ -16,6 +16,22 @@ interface PaymentResult {
   message?: string;
 }
 
+interface ProcessPaymentOptions {
+  amount: number;
+  modelSize: number;
+  userId: number;
+  referralCode?: string;
+}
+
+interface ProcessPaymentResult {
+  success: boolean;
+  exhibitUrl?: string;
+  error?: string;
+}
+
+// Store connected wallet state
+let connectedWalletAddress: string | null = null;
+
 export const connectWallet = async (): Promise<ConnectWalletResult> => {
   // Mock wallet connection - in production, this would use TON Connect
   try {
@@ -25,6 +41,7 @@ export const connectWallet = async (): Promise<ConnectWalletResult> => {
     // Demo: 90% success rate
     if (Math.random() > 0.1) {
       const walletAddress = `UQ${Math.random().toString(36).substring(2, 10)}...${Math.random().toString(36).substring(2, 6)}`;
+      connectedWalletAddress = walletAddress;
       return { 
         success: true, 
         walletAddress 
@@ -42,6 +59,10 @@ export const connectWallet = async (): Promise<ConnectWalletResult> => {
       message: "An unexpected error occurred."
     };
   }
+};
+
+export const isWalletConnected = (): boolean => {
+  return connectedWalletAddress !== null;
 };
 
 export const makePayment = async (
@@ -77,6 +98,39 @@ export const makePayment = async (
   }
 };
 
+export const processPayment = async (options: ProcessPaymentOptions): Promise<ProcessPaymentResult> => {
+  const { amount, modelSize, userId, referralCode } = options;
+  
+  try {
+    // First attempt to make the payment
+    const paymentResult = await makePayment(amount, referralCode);
+    
+    if (!paymentResult.success) {
+      return {
+        success: false,
+        error: paymentResult.message
+      };
+    }
+    
+    // Generate a unique exhibit URL with the transaction ID
+    const exhibitUrl = `${window.location.origin}/exhibit?id=${paymentResult.transactionId}&size=${modelSize}&user=${userId}`;
+    
+    // Log the successful payment
+    console.log(`Successful payment: ${amount} TON, Model size: ${modelSize}m, User: ${userId}${referralCode ? `, Referral: ${referralCode}` : ''}`);
+    
+    return {
+      success: true,
+      exhibitUrl
+    };
+  } catch (error) {
+    console.error("Process payment error:", error);
+    return {
+      success: false,
+      error: "An unexpected error occurred while processing your payment."
+    };
+  }
+};
+
 export const getTONtoUSDRate = async (): Promise<number> => {
   // In production, this would fetch the current TON to USD exchange rate
   // For demo, we'll use a fixed rate of $3 per TON
@@ -88,4 +142,11 @@ export const usdToTON = (usdAmount: number): number => {
   // Fixed rate for demo
   const tonPerUsd = 1 / 3.0;
   return usdAmount * tonPerUsd;
+};
+
+// Generate a referral link for the user
+export const generateReferralLink = (username: string): string => {
+  // Generate a referral URL with the username as the referral code
+  const baseUrl = window.location.origin;
+  return `${baseUrl}?ref=${encodeURIComponent(username)}`;
 };
