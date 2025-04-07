@@ -94,9 +94,9 @@ const Exhibit: React.FC = () => {
           <div id="card" className="w-full">
             <model-viewer
               id="dexpoModel"
-              src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-              ios-src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
-              poster="https://modelviewer.dev/assets/poster-astronaut.webp"
+              src="https://storage.googleapis.com/superhero-origami/batman_ben_aflleck.glb"
+              ios-src="https://storage.googleapis.com/superhero-origami/Batman_Ben_Aflleck.usdz"
+              poster="https://storage.googleapis.com/superhero-origami/batman_poster.webp"
               shadow-intensity="1"
               camera-controls
               auto-rotate

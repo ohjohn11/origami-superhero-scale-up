@@ -35,9 +35,9 @@ declare global {
 
 const ModelViewer: React.FC<ModelViewerProps> = ({
   modelSize,
-  modelUrl = "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-  iosModelUrl = "https://modelviewer.dev/shared-assets/models/Astronaut.usdz",
-  posterUrl = "https://modelviewer.dev/assets/poster-astronaut.webp",
+  modelUrl = "https://storage.googleapis.com/superhero-origami/batman_ben_aflleck.glb",
+  iosModelUrl = "https://storage.googleapis.com/superhero-origami/Batman_Ben_Aflleck.usdz",
+  posterUrl = "https://storage.googleapis.com/superhero-origami/batman_poster.webp",
   arEnabled = true,
   autoRotate = true,
   onARActivated
@@ -98,9 +98,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
         exposure="0.5"
         scale={`${modelSize} ${modelSize} ${modelSize}`}
       />
-      <div className="absolute top-2 right-2 bg-hero-accent text-white px-3 py-1 rounded-full text-sm font-medium">
-        {modelSize}m
-      </div>
+      {/* Removed the size digits display that was here */}
     </div>
   );
 };
