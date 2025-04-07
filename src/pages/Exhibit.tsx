@@ -94,9 +94,9 @@ const Exhibit: React.FC = () => {
           <div id="card" className="w-full">
             <model-viewer
               id="dexpoModel"
-              src="https://cdn.glitch.global/f2adc1d7-d66d-42c8-b62b-3ccc8d46dbbf/batman_ben_aflleck.glb"
-              ios-src="https://cdn.glitch.global/f2adc1d7-d66d-42c8-b62b-3ccc8d46dbbf/Batman_Ben_Aflleck.usdz"
-              poster="https://cdn.glitch.global/f083053f-1952-4730-aa71-941f172f95c4/Tatoo%20EXPO%20(69).png"
+              src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+              ios-src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
+              poster="https://modelviewer.dev/assets/poster-astronaut.webp"
               shadow-intensity="1"
               camera-controls
               auto-rotate

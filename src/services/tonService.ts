@@ -1,109 +1,91 @@
 
-import { toast } from 'sonner';
+// This would typically be implemented with actual TON blockchain interaction
 
-// TON price in USD (to be fetched from an API in production)
-const TON_USD_PRICE = 5.5; // Example price, would be fetched from an API
+// Mock TON service for demo purposes
+// In production, this would use TON SDK or TON Connect
 
-// Constants
-const TON_RECEIVER_ADDRESS = 'UQDqteNPbEXEh9M0hzMUpJV8AV7Cq9T7m0reVXEzqLoDOMaw';
-const TON_API_KEY = 'AHOGHVOITDJSISYAAAANBVWVO7VEKKKMAFZD3CBVI7ORAHOPSBBTJRZBD5P2Q5BCMHEKS7I';
-
-interface PaymentRequest {
-  amount: number; // USD amount
-  referralCode?: string;
-  modelSize: number; // Size in meters
-  userId: number;
-}
-
-interface PaymentResponse {
+interface ConnectWalletResult {
   success: boolean;
-  paymentUrl?: string;
-  error?: string;
-  exhibitUrl?: string;
+  walletAddress?: string;
+  message?: string;
 }
 
-// For demonstration purposes
-let connectedWallet: string | null = null;
+interface PaymentResult {
+  success: boolean;
+  transactionId?: string;
+  message?: string;
+}
 
-// Function to connect TON wallet
-export const connectWallet = async (): Promise<{ success: boolean; walletAddress?: string }> => {
+export const connectWallet = async (): Promise<ConnectWalletResult> => {
+  // Mock wallet connection - in production, this would use TON Connect
   try {
-    // In a real implementation, this would use TON Connect SDK
-    console.log('Connecting to TON wallet...');
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Simulating wallet connection for demo
-    // In production, we would use TON Connect SDK
-    const mockWalletAddress = `UQ${Math.random().toString(36).substring(2, 10)}`;
-    connectedWallet = mockWalletAddress;
-    
-    return {
-      success: true,
-      walletAddress: mockWalletAddress
-    };
-  } catch (error) {
-    console.error('Error connecting wallet:', error);
-    return { 
-      success: false,
-      error: 'Failed to connect wallet'
-    };
-  }
-};
-
-// Check if wallet is connected
-export const isWalletConnected = (): boolean => {
-  return !!connectedWallet;
-};
-
-// Get connected wallet address
-export const getWalletAddress = (): string | null => {
-  return connectedWallet;
-};
-
-// Convert USD to TON
-export const usdToTon = (usdAmount: number): number => {
-  return usdAmount / TON_USD_PRICE;
-};
-
-// Process payment
-export const processPayment = async (request: PaymentRequest): Promise<PaymentResponse> => {
-  try {
-    const { amount, referralCode, modelSize, userId } = request;
-    
-    // Calculate TON amount
-    const tonAmount = usdToTon(amount);
-    
-    console.log(`Processing payment: $${amount} (${tonAmount.toFixed(2)} TON)`);
-    console.log(`Model size: ${modelSize} meters`);
-    
-    if (referralCode) {
-      console.log(`Referral code: ${referralCode}`);
+    // Demo: 90% success rate
+    if (Math.random() > 0.1) {
+      const walletAddress = `UQ${Math.random().toString(36).substring(2, 10)}...${Math.random().toString(36).substring(2, 6)}`;
+      return { 
+        success: true, 
+        walletAddress 
+      };
+    } else {
+      return { 
+        success: false, 
+        message: "Failed to connect wallet. Please try again."
+      };
     }
-    
-    // In a real implementation, we would:
-    // 1. Generate a payment link using TON Connect
-    // 2. Track the payment status
-    // 3. Generate the exhibit URL after successful payment
-    
-    // For demo purposes, we'll simulate a successful payment
-    const uniqueId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-    const exhibitUrl = `${window.location.origin}/exhibit?id=${uniqueId}&scale=${modelSize}&user=${userId}`;
-    
-    return {
-      success: true,
-      paymentUrl: 'https://ton.org/pay', // Mock URL
-      exhibitUrl
-    };
-  } catch (error) {
-    console.error('Payment processing error:', error);
-    return {
-      success: false,
-      error: 'Payment processing failed'
+  } catch (err) {
+    console.error("Wallet connection error:", err);
+    return { 
+      success: false, 
+      message: "An unexpected error occurred."
     };
   }
 };
 
-// Generate referral link
-export const generateReferralLink = (username: string): string => {
-  const baseUrl = 'https://t.me/chekpo11nt_bot?start=';
-  return `${baseUrl}${encodeURIComponent(username)}`;
+export const makePayment = async (
+  amount: number,
+  referralCode?: string
+): Promise<PaymentResult> => {
+  try {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Demo: 80% success rate
+    if (Math.random() > 0.2) {
+      const txId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+      
+      console.log(`Payment processed: ${amount} TON${referralCode ? `, Referral: ${referralCode}` : ''}`);
+      
+      return {
+        success: true,
+        transactionId: txId
+      };
+    } else {
+      return {
+        success: false,
+        message: "Payment failed. Please try again."
+      };
+    }
+  } catch (err) {
+    console.error("Payment error:", err);
+    return {
+      success: false,
+      message: "An unexpected error occurred during payment."
+    };
+  }
+};
+
+export const getTONtoUSDRate = async (): Promise<number> => {
+  // In production, this would fetch the current TON to USD exchange rate
+  // For demo, we'll use a fixed rate of $3 per TON
+  return 3.0;
+};
+
+// Convert USD amount to TON amount
+export const usdToTON = (usdAmount: number): number => {
+  // Fixed rate for demo
+  const tonPerUsd = 1 / 3.0;
+  return usdAmount * tonPerUsd;
 };

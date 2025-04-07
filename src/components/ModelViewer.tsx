@@ -35,9 +35,9 @@ declare global {
 
 const ModelViewer: React.FC<ModelViewerProps> = ({
   modelSize,
-  modelUrl = "https://cdn.glitch.global/f2adc1d7-d66d-42c8-b62b-3ccc8d46dbbf/batman_ben_aflleck.glb",
-  iosModelUrl = "https://cdn.glitch.global/f2adc1d7-d66d-42c8-b62b-3ccc8d46dbbf/Batman_Ben_Aflleck.usdz",
-  posterUrl = "https://cdn.glitch.global/f083053f-1952-4730-aa71-941f172f95c4/Tatoo%20EXPO%20(69).png",
+  modelUrl = "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
+  iosModelUrl = "https://modelviewer.dev/shared-assets/models/Astronaut.usdz",
+  posterUrl = "https://modelviewer.dev/assets/poster-astronaut.webp",
   arEnabled = true,
   autoRotate = true,
   onARActivated
