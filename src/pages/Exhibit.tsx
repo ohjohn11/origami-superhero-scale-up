@@ -94,8 +94,8 @@ const Exhibit: React.FC = () => {
           <div id="card" className="w-full">
             <model-viewer
               id="dexpoModel"
-              src="https://storage.googleapis.com/superhero-origami/batman_ben_aflleck.glb"
-              ios-src="https://storage.googleapis.com/superhero-origami/Batman_Ben_Aflleck.usdz"
+              src="https://cdn.glitch.global/f2adc1d7-4524-4c86-81f6-c95eaeb58d8f/batman_ben_aflleck.glb?v=1731206200716"
+              ios-src="https://cdn.glitch.global/f2adc1d7-4524-4c86-81f6-c95eaeb58d8f/Batman_Ben_Aflleck.usdz?v=1731206206021"
               poster="https://storage.googleapis.com/superhero-origami/batman_poster.webp"
               shadow-intensity="1"
               camera-controls
