@@ -45,7 +45,7 @@ const ReferralButton: React.FC = () => {
       disabled={isGenerating || !user}
     >
       <Share2 className="mr-2 h-4 w-4" />
-      {isGenerating ? "Generating..." : "Get Your Referral Link"}
+      {isGenerating ? "Generating..." : "Получай 50% с каждой продажи, партнер. Забирай реферальную ссылку."}
     </Button>
   );
 };
