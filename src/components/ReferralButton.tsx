@@ -38,15 +38,18 @@ const ReferralButton: React.FC = () => {
   };
   
   return (
-    <Button 
-      onClick={handleGenerateReferral}
-      variant="outline"
-      className="w-full bg-hero-secondary border-hero-accent/30"
-      disabled={isGenerating || !user}
-    >
-      <Share2 className="mr-2 h-4 w-4" />
-      {isGenerating ? "Generating..." : "Получай 50% с каждой продажи, партнер. Забирай реферальную ссылку."}
-    </Button>
+    <div className="flex flex-col items-center space-y-2">
+      <Button 
+        onClick={handleGenerateReferral}
+        variant="outline"
+        className="w-full bg-hero-secondary border-hero-accent/30 glow-button"
+        disabled={isGenerating || !user}
+      >
+        <Share2 className="mr-2 h-4 w-4" />
+        {isGenerating ? "Generating..." : "Get your affiliate link!"}
+      </Button>
+      <p className="text-sm text-[#7FB7BE] font-medium">Earn your healthy 50%, partner.</p>
+    </div>
   );
 };
 

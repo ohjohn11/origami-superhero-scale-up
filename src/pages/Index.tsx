@@ -11,9 +11,10 @@ import { useTelegram } from '@/context/TelegramProvider';
 
 const Index: React.FC = () => {
   const { user, loadingWebApp, referralCode } = useTelegram();
-  const [modelSize, setModelSize] = useState(1); // Default 1 meter
-  const [price, setPrice] = useState(2); // Default $2
+  const [modelSize, setModelSize] = useState(2); // Starting with 2 meters
+  const [price, setPrice] = useState(4); // $4 for 2 meters
   const [exhibitUrl, setExhibitUrl] = useState<string | null>(null);
+  const [currentModelIndex, setCurrentModelIndex] = useState(0);
   
   const handleSizeChange = (newSize: number) => {
     setModelSize(newSize);
@@ -26,6 +27,10 @@ const Index: React.FC = () => {
   
   const handlePaymentSuccess = (url: string) => {
     setExhibitUrl(url);
+  };
+
+  const handleModelChange = (index: number) => {
+    setCurrentModelIndex(index);
   };
   
   if (loadingWebApp) {
@@ -52,9 +57,12 @@ const Index: React.FC = () => {
           </CardHeader>
           
           <CardContent className="space-y-6">
-            <ModelViewer modelSize={modelSize / 20} /> {/* Scale for preview */}
+            <ModelViewer 
+              modelSize={modelSize / 20} 
+              onModelChange={handleModelChange}
+            />
             
-            <div className="glass-panel p-4">
+            <div className="glass-panel">
               <PriceSlider 
                 value={modelSize}
                 onChange={handleSizeChange}

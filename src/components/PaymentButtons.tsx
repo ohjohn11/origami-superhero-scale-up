@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { CreditCard, Smartphone, Wallet } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { useTelegram } from '@/context/TelegramProvider';
 import { toast } from 'sonner';
 import { connectWallet, isWalletConnected, processPayment } from '@/services/tonService';
@@ -14,8 +14,9 @@ interface PaymentButtonsProps {
 
 const PaymentButtons: React.FC<PaymentButtonsProps> = ({ price, modelSize, onPaymentSuccess }) => {
   const { user, referralCode } = useTelegram();
+  const [isRegistered, setIsRegistered] = useState(false);
   
-  const handleTonPayment = async () => {
+  const handleStartButton = async () => {
     try {
       if (!user) {
         toast.error("User information not available");
@@ -31,6 +32,21 @@ const PaymentButtons: React.FC<PaymentButtonsProps> = ({ price, modelSize, onPay
           return;
         }
         toast.success("Wallet connected");
+        setIsRegistered(true);
+      } else {
+        setIsRegistered(true);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("An error occurred during registration");
+    }
+  };
+  
+  const handleTonPayment = async () => {
+    try {
+      if (!user) {
+        toast.error("User information not available");
+        return;
       }
       
       // Process the payment
@@ -54,43 +70,24 @@ const PaymentButtons: React.FC<PaymentButtonsProps> = ({ price, modelSize, onPay
     }
   };
   
-  const handleApplePay = () => {
-    toast.info("Apple Pay is not available in this preview. Please use TON payment.");
-  };
-  
-  const handleGooglePay = () => {
-    toast.info("Google Pay is not available in this preview. Please use TON payment.");
-  };
-  
   return (
     <div className="space-y-4">
-      <Button 
-        onClick={handleTonPayment}
-        className="w-full bg-ton hover:bg-ton-dark text-white"
-      >
-        <Wallet className="mr-2 h-4 w-4" />
-        Pay with TON
-      </Button>
-      
-      <div className="grid grid-cols-2 gap-4">
+      {!isRegistered ? (
         <Button 
-          onClick={handleApplePay}
-          variant="outline"
-          className="bg-hero-secondary text-hero-foreground border-hero-accent/30"
+          onClick={handleStartButton}
+          className="w-full bg-[#7FB7BE] hover:bg-[#7FB7BE]/80 text-white"
         >
-          <CreditCard className="mr-2 h-4 w-4" />
-          Apple Pay
+          Start
         </Button>
-        
+      ) : (
         <Button 
-          onClick={handleGooglePay}
-          variant="outline"
-          className="bg-hero-secondary text-hero-foreground border-hero-accent/30"
+          onClick={handleTonPayment}
+          className="w-full bg-ton hover:bg-ton-dark text-white"
         >
-          <Smartphone className="mr-2 h-4 w-4" />
-          Android Pay
+          <Wallet className="mr-2 h-4 w-4" />
+          Pay with TON
         </Button>
-      </div>
+      )}
     </div>
   );
 };
